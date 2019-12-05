@@ -26,10 +26,9 @@ Partial Class TopForm
         Me.btnCheckAll = New System.Windows.Forms.Button()
         Me.chkYmd = New System.Windows.Forms.CheckBox()
         Me.btnRun = New System.Windows.Forms.Button()
-        Me.dgvSave = New Save.ExDataGridView(Me.components)
         Me.timeLabel = New System.Windows.Forms.Label()
-        Me.labelTimer = New System.Windows.Forms.Timer(Me.components)
         Me.endLabel = New System.Windows.Forms.Label()
+        Me.dgvSave = New Save.ExDataGridView(Me.components)
         CType(Me.dgvSave, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -61,15 +60,6 @@ Partial Class TopForm
         Me.btnRun.Text = "Run"
         Me.btnRun.UseVisualStyleBackColor = True
         '
-        'dgvSave
-        '
-        Me.dgvSave.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvSave.Location = New System.Drawing.Point(9, 9)
-        Me.dgvSave.Name = "dgvSave"
-        Me.dgvSave.RowTemplate.Height = 21
-        Me.dgvSave.Size = New System.Drawing.Size(607, 382)
-        Me.dgvSave.TabIndex = 0
-        '
         'timeLabel
         '
         Me.timeLabel.AutoSize = True
@@ -79,9 +69,6 @@ Partial Class TopForm
         Me.timeLabel.Size = New System.Drawing.Size(0, 14)
         Me.timeLabel.TabIndex = 4
         '
-        'labelTimer
-        '
-        '
         'endLabel
         '
         Me.endLabel.AutoSize = True
@@ -90,6 +77,15 @@ Partial Class TopForm
         Me.endLabel.Name = "endLabel"
         Me.endLabel.Size = New System.Drawing.Size(0, 12)
         Me.endLabel.TabIndex = 5
+        '
+        'dgvSave
+        '
+        Me.dgvSave.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvSave.Location = New System.Drawing.Point(9, 9)
+        Me.dgvSave.Name = "dgvSave"
+        Me.dgvSave.RowTemplate.Height = 21
+        Me.dgvSave.Size = New System.Drawing.Size(607, 382)
+        Me.dgvSave.TabIndex = 0
         '
         'TopForm
         '
@@ -114,7 +110,6 @@ Partial Class TopForm
     Friend WithEvents chkYmd As System.Windows.Forms.CheckBox
     Friend WithEvents btnRun As System.Windows.Forms.Button
     Friend WithEvents timeLabel As System.Windows.Forms.Label
-    Friend WithEvents labelTimer As System.Windows.Forms.Timer
     Friend WithEvents endLabel As System.Windows.Forms.Label
 
 End Class

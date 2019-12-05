@@ -1,18 +1,19 @@
-﻿Public Class TopForm
+﻿Imports System.Threading
 
+Public Class TopForm
     '.iniファイルのパス
     Public iniFilePath As String = My.Application.Info.DirectoryPath & "\Save.ini"
 
     'チェックボックス列チェック制御用フラグ
     Private cellValueChangeFlg As Boolean = False
 
-    '
+    'ini設定取得用
     Private saveDir As String
     Private saveMax As Integer
     Private saveItem As List(Of String)
 
+    '経過時間表示用
     Private sw As New System.Diagnostics.Stopwatch()
-    Private count As Integer = 0
 
     ''' <summary>
     ''' 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
@@ -319,8 +320,9 @@
     ''' <remarks></remarks>
     Private Function copyDirectory(sourceDirName As String, destDirName As String) As Boolean
         Try
-            'コピー先パスにフォルダ名を加える
-            destDirName = destDirName & "\" & System.IO.Path.GetFileName(sourceDirName)
+            'コピー先パスにフォルダ名を加える(YMDチェック有の場合は日付も加える)
+            Dim ymd As String = If(chkYmd.Checked, Today.ToString("yyyyMMdd") & "_", "")
+            destDirName = destDirName & "\" & ymd & System.IO.Path.GetFileName(sourceDirName)
 
             'コピー先のディレクトリがないときは作る
             If Not System.IO.Directory.Exists(destDirName) Then
@@ -369,8 +371,9 @@
                 destDirName = destDirName + System.IO.Path.DirectorySeparatorChar
             End If
 
-            'コピー
-            System.IO.File.Copy(sourceFileName, destDirName & System.IO.Path.GetFileName(sourceFileName), True)
+            'コピー(YMDチェック有の場合は日付も加える)
+            Dim ymd As String = If(chkYmd.Checked, Today.ToString("yyyyMMdd") & "_", "")
+            System.IO.File.Copy(sourceFileName, destDirName & ymd & System.IO.Path.GetFileName(sourceFileName), True)
 
             Return True
         Catch ex As Exception
@@ -388,16 +391,18 @@
     Private Sub btnRun_Click(sender As System.Object, e As System.EventArgs) Handles btnRun.Click
         endLabel.Text = "処理中"
         endLabel.Refresh()
+
+        Dim timerDelegate As TimerCallback = New TimerCallback(AddressOf worker)
+        Dim timer As Timer = New Timer(timerDelegate, Nothing, 0, 1000)
         sw.Reset()
-        timeLabel.Text = sw.Elapsed.Minutes.ToString("00") & ":" & sw.Elapsed.Seconds.ToString("00")
         sw.Start()
-        labelTimer.Interval = 1000
-        labelTimer.Enabled = True
+        timeLabel.Text = sw.Elapsed.Minutes.ToString("00") & ":" & sw.Elapsed.Seconds.ToString("00")
 
         'Start列の文字クリア
         For Each row As DataGridViewRow In dgvSave.Rows
             row.Cells("Start").Value = ""
         Next
+        dgvSave.Refresh()
 
         'リスト上から順にコピー
         For Each row As DataGridViewRow In dgvSave.Rows
@@ -424,10 +429,19 @@
             dgvSave.Refresh()
         Next
         sw.Stop()
+        timer.Dispose()
+
         endLabel.Text = "終了しました。"
     End Sub
 
-    Private Sub labelTimer_Tick(sender As Object, e As System.EventArgs) Handles labelTimer.Tick
+    Delegate Sub DisplayTimeLabelDelegate()
+
+    Private Sub displayTimeLabel()
         timeLabel.Text = sw.Elapsed.Minutes.ToString("00") & ":" & sw.Elapsed.Seconds.ToString("00")
+        timeLabel.Refresh()
+    End Sub
+
+    Private Sub worker()
+        Invoke(New DisplayTimeLabelDelegate(AddressOf displayTimeLabel))
     End Sub
 End Class
