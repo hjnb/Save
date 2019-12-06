@@ -23,12 +23,15 @@ Partial Class TopForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TopForm))
         Me.btnCheckAll = New System.Windows.Forms.Button()
         Me.chkYmd = New System.Windows.Forms.CheckBox()
         Me.btnRun = New System.Windows.Forms.Button()
         Me.timeLabel = New System.Windows.Forms.Label()
         Me.endLabel = New System.Windows.Forms.Label()
+        Me.topPicture = New System.Windows.Forms.PictureBox()
         Me.dgvSave = New Save.ExDataGridView(Me.components)
+        CType(Me.topPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSave, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -78,6 +81,14 @@ Partial Class TopForm
         Me.endLabel.Size = New System.Drawing.Size(0, 12)
         Me.endLabel.TabIndex = 5
         '
+        'topPicture
+        '
+        Me.topPicture.Location = New System.Drawing.Point(39, 400)
+        Me.topPicture.Name = "topPicture"
+        Me.topPicture.Size = New System.Drawing.Size(42, 39)
+        Me.topPicture.TabIndex = 6
+        Me.topPicture.TabStop = False
+        '
         'dgvSave
         '
         Me.dgvSave.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
@@ -92,14 +103,17 @@ Partial Class TopForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(626, 449)
+        Me.Controls.Add(Me.topPicture)
         Me.Controls.Add(Me.endLabel)
         Me.Controls.Add(Me.timeLabel)
         Me.Controls.Add(Me.btnRun)
         Me.Controls.Add(Me.chkYmd)
         Me.Controls.Add(Me.btnCheckAll)
         Me.Controls.Add(Me.dgvSave)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "TopForm"
         Me.Text = "Save"
+        CType(Me.topPicture, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSave, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -111,5 +125,6 @@ Partial Class TopForm
     Friend WithEvents btnRun As System.Windows.Forms.Button
     Friend WithEvents timeLabel As System.Windows.Forms.Label
     Friend WithEvents endLabel As System.Windows.Forms.Label
+    Friend WithEvents topPicture As System.Windows.Forms.PictureBox
 
 End Class

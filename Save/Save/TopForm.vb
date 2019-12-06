@@ -4,6 +4,9 @@ Public Class TopForm
     '.iniファイルのパス
     Public iniFilePath As String = My.Application.Info.DirectoryPath & "\Save.ini"
 
+    '画像
+    Public imageFilePath As String = My.Application.Info.DirectoryPath & "\Save.ico"
+
     'チェックボックス列チェック制御用フラグ
     Private cellValueChangeFlg As Boolean = False
 
@@ -62,6 +65,14 @@ Public Class TopForm
             Me.Close()
             Exit Sub
         End If
+        If Not System.IO.File.Exists(imageFilePath) Then
+            MsgBox("画像ファイルが存在しません。ファイルを配置して下さい。", MsgBoxStyle.Exclamation)
+            Me.Close()
+            Exit Sub
+        End If
+
+        topPicture.SizeMode = PictureBoxSizeMode.Zoom
+        topPicture.ImageLocation = imageFilePath
 
         'iniファイル内容取得
         '保存先パス
@@ -392,6 +403,8 @@ Public Class TopForm
         endLabel.Text = "処理中"
         endLabel.Refresh()
 
+        dgvSave.FirstDisplayedScrollingRowIndex = 0
+
         Dim timerDelegate As TimerCallback = New TimerCallback(AddressOf worker)
         Dim timer As Timer = New Timer(timerDelegate, Nothing, 0, 1000)
         sw.Reset()
@@ -426,6 +439,7 @@ Public Class TopForm
             Else
                 row.Cells("Start").Value = "Failed"
             End If
+            dgvSave.FirstDisplayedScrollingRowIndex = row.Index
             dgvSave.Refresh()
         Next
         sw.Stop()
