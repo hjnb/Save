@@ -331,10 +331,6 @@ Public Class TopForm
     ''' <remarks></remarks>
     Private Function copyDirectory(sourceDirName As String, destDirName As String) As Boolean
         Try
-            'コピー先パスにフォルダ名を加える(YMDチェック有の場合は日付も加える)
-            Dim ymd As String = If(chkYmd.Checked, Today.ToString("yyyyMMdd") & "_", "")
-            destDirName = destDirName & "\" & ymd & System.IO.Path.GetFileName(sourceDirName)
-
             'コピー先のディレクトリがないときは作る
             If Not System.IO.Directory.Exists(destDirName) Then
                 System.IO.Directory.CreateDirectory(destDirName)
@@ -418,6 +414,7 @@ Public Class TopForm
         dgvSave.Refresh()
 
         'リスト上から順にコピー
+        Dim ymd As String = If(chkYmd.Checked, Today.ToString("yyyyMMdd") & "_", "")
         For Each row As DataGridViewRow In dgvSave.Rows
             Dim isSaved As Boolean = False
             Dim copyTargetPath As String = Util.checkDBNullValue(row.Cells("From").Value)
@@ -430,7 +427,7 @@ Public Class TopForm
             If System.IO.File.Exists(copyTargetPath) Then
                 isSaved = copyFile(copyTargetPath, saveDir)
             ElseIf System.IO.Directory.Exists(copyTargetPath) Then
-                isSaved = copyDirectory(copyTargetPath, saveDir)
+                isSaved = copyDirectory(copyTargetPath, saveDir & "\" & ymd & System.IO.Path.GetFileName(copyTargetPath))
             End If
 
             '結果表示
